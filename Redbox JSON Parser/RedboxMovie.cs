@@ -1,23 +1,27 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Redbox_JSON_Parser
 {
-    class RedboxMovie
+    public class RedboxMovie
     {
-        private string ID;
-        private string Name;
+        public string TitleId { get; }
+        public string LastSeen { get; }
+        public string Soon { get; }
 
-        public RedboxMovie(string id, string name)
+        public RedboxMovie(string id, string soon)
         {
-            ID = id;
-            Name = name;
+            TitleId = id;
+            LastSeen = DateTime.Now.ToString();
+            Soon = soon;
         }
 
         public override string ToString()
         {
             var movieSB = new StringBuilder();
-            movieSB.AppendLine($"ID: {ID}");
-            movieSB.AppendLine($"Name: {Name}");
+            movieSB.AppendLine($"ID: {TitleId.ToString()}");
+            movieSB.AppendLine($"LastSeen: {LastSeen.ToString()}");
+            movieSB.AppendLine($"Soon: {Soon}");
             return movieSB.ToString();
         }
     }

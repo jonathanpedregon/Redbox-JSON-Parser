@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Redbox_JSON_Parser
 {
@@ -8,11 +9,8 @@ namespace Redbox_JSON_Parser
         {
             var parser = new RedBoxJsonParser();
 
-            foreach (var movie in parser.RedboxMovies) { Console.WriteLine(movie.ToString()); }
-
-            Console.WriteLine($"Movie count: {parser.RedboxMovies.Count}");
-
-            Console.Read();
+            var writer = new RedBoxDatabaseWriter(parser.RedboxMovies);
+            writer.WriteAllMovies();
         }
     }
 }
