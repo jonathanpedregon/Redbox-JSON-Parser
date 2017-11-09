@@ -52,6 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorEmailHandler.cs" />
+    <Compile Include="Exceptions\EmptyJsonException.cs" />
+    <Compile Include="Exceptions\InvalidJsonException.cs" />
+    <Compile Include="Exceptions\ScreenBuddyException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedBoxDatabaseWriter.cs" />

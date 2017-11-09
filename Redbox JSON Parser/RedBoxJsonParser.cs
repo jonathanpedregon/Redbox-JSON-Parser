@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Redbox_JSON_Parser.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace Redbox_JSON_Parser
@@ -17,9 +19,22 @@ namespace Redbox_JSON_Parser
 
         public void CreateRedBoxMovies()
         {
-            Json = Requester.RetrieveJSON();
+            Json = ""; //Requester.RetrieveJSON();
+            if(Json.Trim().Length == 0)
+            {
+                var emailHandler = new ErrorEmailHandler(new EmptyJsonException());
+                Environment.Exit(-2);
+            }
             TrimJson();
-            RedboxMovies = JsonConvert.DeserializeObject<List<RedboxMovie>>(Json);
+            try
+            {
+                RedboxMovies = JsonConvert.DeserializeObject<List<RedboxMovie>>(Json); //jsonreaderexception
+            }
+            catch(JsonReaderException)
+            {
+                var emailHandler = new ErrorEmailHandler(new InvalidJsonException(Json));
+                Environment.Exit(-1);
+            }
         }
 
         public void TrimJson()
