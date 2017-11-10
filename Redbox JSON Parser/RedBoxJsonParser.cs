@@ -19,7 +19,7 @@ namespace Redbox_JSON_Parser
 
         public void CreateRedBoxMovies()
         {
-            Json = ""; //Requester.RetrieveJSON();
+            Json = Requester.RetrieveJSON();
             if(Json.Trim().Length == 0)
             {
                 var emailHandler = new ErrorEmailHandler(new EmptyJsonException());

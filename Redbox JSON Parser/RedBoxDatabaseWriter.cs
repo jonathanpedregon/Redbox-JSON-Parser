@@ -2,6 +2,8 @@
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data.Odbc;
+using Redbox_JSON_Parser.Exceptions;
+using System;
 
 namespace Redbox_JSON_Parser
 {
@@ -19,9 +21,17 @@ namespace Redbox_JSON_Parser
 
         public void Connect()
         {
-            SetConnectionString();
-            Connection = new MySqlConnection(ConnectionString);
-            Connection.Open();
+            try
+            {
+                SetConnectionString();
+                Connection = new MySqlConnection(ConnectionString);
+                Connection.Open();
+            }
+            catch (MySqlException)
+            {
+                var errorHandler = new ErrorEmailHandler(new DatabaseConnectionException());
+                Environment.Exit(-3);
+            }
         }
 
         public void SetConnectionString()
@@ -29,7 +39,7 @@ namespace Redbox_JSON_Parser
             var ConnectionStringBuilder = new MySqlConnectionStringBuilder();
             ConnectionStringBuilder.Server = "52.27.204.173";
             ConnectionStringBuilder.UserID = "screenbuddy";
-            ConnectionStringBuilder.Password = "s0ck34";
+            ConnectionStringBuilder.Password = "bad";//"s0ck34";
             ConnectionStringBuilder.Database = "screenbuddy_dev";
             ConnectionStringBuilder.Port = 3306;
             ConnectionString = ConnectionStringBuilder.ToString();
@@ -51,7 +61,16 @@ namespace Redbox_JSON_Parser
             Connect();
             foreach (var movie in RedBoxMovies)
             {
-                Execute(movie);
+                try
+                {
+                    Execute(movie);
+                }
+                catch (Exception)
+                {
+                    var errorHandler = new ErrorEmailHandler(new DatabaseWritingException(movie));
+                    Connection.Close();
+                    Environment.Exit(-4);
+                }
             }
             Connection.Close();
         }

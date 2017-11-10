@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorEmailHandler.cs" />
+    <Compile Include="Exceptions\DatabaseConnectionException.cs" />
+    <Compile Include="Exceptions\DatabaseWritingException.cs" />
     <Compile Include="Exceptions\EmptyJsonException.cs" />
     <Compile Include="Exceptions\InvalidJsonException.cs" />
     <Compile Include="Exceptions\ScreenBuddyException.cs" />
