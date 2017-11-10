@@ -5,36 +5,44 @@ using System.Collections.Generic;
 
 namespace Redbox_JSON_Parser
 {
-    class RedBoxJsonParser
+    public class RedBoxJsonParser
     {
         private RedboxWebRequester Requester;
-        private string Json;
+        public string Json;
         public List<RedboxMovie> RedboxMovies { get; set; }
 
         public RedBoxJsonParser()
         {
             Requester = new RedboxWebRequester();
-            CreateRedBoxMovies();
         }
 
-        public void CreateRedBoxMovies()
+        public void Execute()
         {
             Json = Requester.RetrieveJSON();
-            if(Json.Trim().Length == 0)
-            {
-                var emailHandler = new ErrorEmailHandler(new EmptyJsonException());
-                Environment.Exit(-2);
-            }
-            TrimJson();
             try
             {
-                RedboxMovies = JsonConvert.DeserializeObject<List<RedboxMovie>>(Json); //jsonreaderexception
+                CreateRedBoxMovies();
             }
-            catch(JsonReaderException)
+            catch (JsonReaderException)
             {
                 var emailHandler = new ErrorEmailHandler(new InvalidJsonException(Json));
                 Environment.Exit(-1);
             }
+            catch (EmptyJsonException)
+            {
+                var emailHandler = new ErrorEmailHandler(new EmptyJsonException());
+                Environment.Exit(-2);
+            }
+        }
+
+        public void CreateRedBoxMovies()
+        {
+            if (Json.Trim().Length == 0)
+            {
+                throw new EmptyJsonException();
+            }
+            TrimJson();
+            RedboxMovies = JsonConvert.DeserializeObject<List<RedboxMovie>>(Json);
         }
 
         public void TrimJson()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Redbox_JSON_Parser.Exceptions
 {
-    class EmptyJsonException : ScreenBuddyException
+    public class EmptyJsonException : ScreenBuddyException
     {
         public EmptyJsonException()
         {
