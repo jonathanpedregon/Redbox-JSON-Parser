@@ -11,11 +11,6 @@ namespace RedBox_JSON_Crawler_Tests
     [TestFixture]
     public class RedBoxJsonParserTests
     {
-
-        public RedBoxJsonParserTests()
-        {
-        }
-
         [Test]
         public void TestProperJsonFormat()
         {
