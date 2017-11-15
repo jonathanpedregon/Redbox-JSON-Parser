@@ -10,28 +10,20 @@ namespace Redbox_JSON_Parser
     public class RedBoxDatabaseWriter
     {
         public List<RedboxMovie> RedBoxMovies;
-        private MySqlConnection Connection;
-        private string ConnectionString;
+        public MySqlConnection Connection;
+        public string ConnectionString;
         private MySqlCommand Command;
 
         public RedBoxDatabaseWriter(List<RedboxMovie> movies)
         {
             RedBoxMovies = movies;
+            SetConnectionString();
         }
 
         public void Connect()
         {
-            try
-            {
-                SetConnectionString();
-                Connection = new MySqlConnection(ConnectionString);
-                Connection.Open();
-            }
-            catch (MySqlException)
-            {
-                var errorHandler = new ErrorEmailHandler(new DatabaseConnectionException());
-                Environment.Exit(-3);
-            }
+            Connection = new MySqlConnection(ConnectionString);
+            Connection.Open();
         }
 
         public void SetConnectionString()
@@ -39,7 +31,7 @@ namespace Redbox_JSON_Parser
             var ConnectionStringBuilder = new MySqlConnectionStringBuilder();
             ConnectionStringBuilder.Server = "52.27.204.173";
             ConnectionStringBuilder.UserID = "screenbuddy";
-            ConnectionStringBuilder.Password = "bad";//"s0ck34";
+            ConnectionStringBuilder.Password = "s0ck34";
             ConnectionStringBuilder.Database = "screenbuddy_dev";
             ConnectionStringBuilder.Port = 3306;
             ConnectionString = ConnectionStringBuilder.ToString();
@@ -67,9 +59,7 @@ namespace Redbox_JSON_Parser
                 }
                 catch (Exception)
                 {
-                    var errorHandler = new ErrorEmailHandler(new DatabaseWritingException(movie));
-                    Connection.Close();
-                    Environment.Exit(-4);
+                    throw new DatabaseWritingException(movie);
                 }
             }
             Connection.Close();

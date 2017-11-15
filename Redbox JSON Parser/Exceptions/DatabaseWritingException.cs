@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Redbox_JSON_Parser.Exceptions
 {
-    class DatabaseWritingException : ScreenBuddyException
+    public class DatabaseWritingException : ScreenBuddyException
     {
         public DatabaseWritingException(RedboxMovie movie)
         {
